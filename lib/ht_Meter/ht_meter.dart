@@ -10,31 +10,70 @@ class HtMeter extends StatefulWidget {
 }
 
 class _HtMeterState extends State<HtMeter> {
-  String? selectedDivision;
-  String? selectedSubDivision;
-  String? selectedSection;
-  DateTime? selectedDate;
-  String? selectedPremises;
-  String? selectedService;
-  String? selectedEbsMeterMake;
-  String? selectedFieldMeterMake;
-  String? selectedMeterCtRatio;
-  String? selectedMeterPtRatio;
-  String? selectedMeterWarranty;
-  String? selectedCTPTMake;
-  String? selectedCTPTptRatio;
-  String? selectedCTPTctRatio;
-  String? meterSatisfaction = "Yes";
+  String? selectedDivision; 
+  String? selectedSubDivision; 
+  String? selectedSection; 
+  DateTime? selectedDate; 
+  String? selectedPremises; 
+  String? selectedService; 
+  String? selectedEbsMeterMake; 
+  String? selectedFieldMeterMake; 
+  String? selectedMeterCtRatio; 
+  String? selectedMeterPtRatio; 
+  String? selectedMeterWarranty; 
+  String? selectedCTPTMake; 
+  String? selectedCTPTptRatio; 
+  String? selectedCTPTctRatio; 
+  String? meterSatisfaction = "Yes"; 
   String? selectedNewMeterMake;
-  String? selectedNewMeterCtRatio;
-  String? selectedNewMeterPtRatio;
-  String? selectedNewMeterWarranty;
+  String? selectedNewMeterCtRatio; 
+  String? selectedNewMeterPtRatio; 
+  String? selectedNewMeterWarranty; 
   String? selectedNewCTPTMake;
   String? selectedNewCTPTptRatio;
   String? selectedNewCTPTctRatio;
-  String? meterNewSatisfaction="Yes";
+  String? meterNewSatisfaction = "Yes";
 
-  
+  final TextEditingController _fieldmeterserialno = TextEditingController();
+  final TextEditingController _fieldmetermf = TextEditingController();
+  final TextEditingController _fieldmeterpomonth = TextEditingController();
+  final TextEditingController _ctptserialno = TextEditingController();
+  final TextEditingController _ctptsaqequipmentno = TextEditingController();
+  final TextEditingController _kwh = TextEditingController();
+  final TextEditingController _kvah = TextEditingController();
+  final TextEditingController _md = TextEditingController();
+  final TextEditingController _tod1kvah = TextEditingController();
+  final TextEditingController _kwhError = TextEditingController();
+  final TextEditingController _importKWH = TextEditingController();
+  final TextEditingController _exportKWH = TextEditingController();
+  final TextEditingController _importKVAH = TextEditingController();
+  final TextEditingController _exportKVAH = TextEditingController(); 
+  final TextEditingController _importMD = TextEditingController(); 
+  final TextEditingController _exportMD = TextEditingController(); 
+  final TextEditingController _solartod1kvah = TextEditingController();
+  final TextEditingController _kwhErrorInSolar = TextEditingController(); 
+  final TextEditingController _newmeterserialno = TextEditingController();   
+  final TextEditingController _newmetermf = TextEditingController();
+  final TextEditingController _newmeterpono = TextEditingController();
+  final TextEditingController _newmeterpomonth = TextEditingController();
+  final TextEditingController _newctptserialno= TextEditingController();
+  final TextEditingController _newctptsapquipmentno = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
+    // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
+    // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
+    // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
 
   List<String> selectDivision = [
     "SELECT",
@@ -518,7 +557,7 @@ class _HtMeterState extends State<HtMeter> {
                           Expanded(
                             child: DropdownButtonFormField2<String>(
                               value: selectedService,
-                              
+
                               decoration: const InputDecoration(
                                 labelStyle: TextStyle(color: Colors.red),
                                 border: OutlineInputBorder(),
@@ -631,10 +670,10 @@ class _HtMeterState extends State<HtMeter> {
                         value: selectedEbsMeterMake,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-hintText: "SELECT",
+                          hintText: "SELECT",
                           // labelText: 'Select Complaint 2',
                         ),
-                        
+
                         items: ["SECURI"]
                             .map(
                               (e) => DropdownMenuItem<String>(
@@ -750,6 +789,7 @@ hintText: "SELECT",
                         ],
                       ),
                       TextField(
+                        controller: _fieldmeterserialno,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           enabledBorder: UnderlineInputBorder(
@@ -882,6 +922,7 @@ hintText: "SELECT",
                           Expanded(
                             flex: 2,
                             child: TextField(
+                              controller: _fieldmetermf,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.right,
                               // textDirection: TextDirection.rtl,
@@ -923,7 +964,7 @@ hintText: "SELECT",
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
-                              // controller: _controllerPO,
+                              controller: _fieldmeterpomonth,
                               textAlign: TextAlign.right,
                               keyboardType: TextInputType.number,
                               inputFormatters: [
@@ -1060,6 +1101,7 @@ hintText: "SELECT",
                         ],
                       ),
                       TextField(
+                        controller: _ctptserialno,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
@@ -1091,6 +1133,7 @@ hintText: "SELECT",
                       ),
 
                       TextField(
+                        controller: _ctptsaqequipmentno,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
@@ -1220,7 +1263,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _kwh,
+                                controller: _kwh,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1235,7 +1278,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _kvah,
+                                controller: _kvah,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1250,7 +1293,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _md,
+                                controller: _md,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1264,7 +1307,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _tod1kvah,
+                                controller: _tod1kvah,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1279,7 +1322,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _kwhError,
+                                controller: _kwhError,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1324,7 +1367,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _importKWH,
+                                controller: _importKWH,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1339,7 +1382,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _exportKWH,
+                                controller: _exportKWH,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1354,7 +1397,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _importKVAH,
+                                controller: _importKVAH,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1369,7 +1412,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _exportKVAH,
+                                controller: _exportKVAH,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1384,7 +1427,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _importMD,
+                                controller: _importMD,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1400,7 +1443,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _exportMD,
+                                controller: _exportMD,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1415,7 +1458,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _tod1kvah,
+                                controller: _solartod1kvah,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1430,7 +1473,7 @@ hintText: "SELECT",
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _kwhErrorInSolar,
+                                controller: _kwhErrorInSolar,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -1539,6 +1582,7 @@ hintText: "SELECT",
                         ],
                       ),
                       TextField(
+                        controller: _newmeterserialno,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
@@ -1598,7 +1642,7 @@ hintText: "SELECT",
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const Text(
-                            "METER CT RATIO",
+                            "METER PT RATIO",
                             style: TextStyle(fontSize: 12),
                           ),
                         ],
@@ -1642,6 +1686,7 @@ hintText: "SELECT",
                           Expanded(
                             flex: 2,
                             child: TextField(
+                              controller: _newmetermf,
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.right,
                               // textDirection: TextDirection.rtl,
@@ -1721,6 +1766,7 @@ hintText: "SELECT",
                         ],
                       ),
                       TextField(
+                        controller: _newmeterpono,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           enabledBorder: UnderlineInputBorder(
@@ -1744,7 +1790,7 @@ hintText: "SELECT",
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
-                              // controller: _controllerPO,
+                              controller: _newmeterpomonth,
                               textAlign: TextAlign.right,
                               keyboardType: TextInputType.number,
                               inputFormatters: [
@@ -1883,6 +1929,7 @@ hintText: "SELECT",
                         ],
                       ),
                       TextField(
+                        controller: _newctptserialno,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
@@ -1914,6 +1961,7 @@ hintText: "SELECT",
                       ),
 
                       TextField(
+                        controller: _newctptsapquipmentno,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly,
@@ -2269,7 +2317,7 @@ hintText: "SELECT",
                   ),
                 ),
               ),
-              const SizedBox(height: 12,),
+              const SizedBox(height: 12),
 
               Card(
                 color: Colors.white,
@@ -2307,32 +2355,27 @@ hintText: "SELECT",
                         ),
                         onChanged: (value) {},
                       ),
-
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 12,),
+              const SizedBox(height: 12),
 
               Container(
                 height: 60,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.red,
-                  borderRadius: BorderRadius.circular(
-                    10,
-                  ), 
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: TextButton(
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        10,
-                      ), 
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: (){},
+                  onPressed: () {},
                   child: const Text("Submit"),
                 ),
               ),
