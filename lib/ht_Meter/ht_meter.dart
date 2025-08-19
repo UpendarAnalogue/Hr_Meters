@@ -1,0 +1,2345 @@
+import 'package:flutter/material.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/services.dart';
+
+class HtMeter extends StatefulWidget {
+  const HtMeter({super.key});
+
+  @override
+  State<HtMeter> createState() => _HtMeterState();
+}
+
+class _HtMeterState extends State<HtMeter> {
+  String? selectedDivision;
+  String? selectedSubDivision;
+  String? selectedSection;
+  DateTime? selectedDate;
+  String? selectedPremises;
+  String? selectedService;
+  String? selectedEbsMeterMake;
+  String? selectedFieldMeterMake;
+  String? selectedMeterCtRatio;
+  String? selectedMeterPtRatio;
+  String? selectedMeterWarranty;
+  String? selectedCTPTMake;
+  String? selectedCTPTptRatio;
+  String? selectedCTPTctRatio;
+  String? meterSatisfaction = "Yes";
+  String? selectedNewMeterMake;
+  String? selectedNewMeterCtRatio;
+  String? selectedNewMeterPtRatio;
+  String? selectedNewMeterWarranty;
+  String? selectedNewCTPTMake;
+  String? selectedNewCTPTptRatio;
+  String? selectedNewCTPTctRatio;
+  String? meterNewSatisfaction="Yes";
+
+  
+
+  List<String> selectDivision = [
+    "SELECT",
+    "HANAMKONDA TOWN",
+    "HANAMKONDA RURAL",
+  ];
+  List<String> selectSubDivision = [
+    "SELECT",
+    "KAZIPET",
+    "HANAMKONDA",
+    "NAYEEMANAGAR",
+  ];
+  List<String> selectSection = [
+    "SELECT",
+    "SUBEDARI",
+    "CHOWRASTHA/HNK",
+    "NAKKALAGUTTA",
+    "MACHILIBAZAR",
+  ];
+  List<String> selectPremises = [
+    "Select",
+    "Consumer Service",
+    "Substation Service",
+  ];
+
+  List<String> selectFieldMetermake = [
+    "SELECT",
+    "Duke Arnics",
+    "Elster",
+    "GENUS",
+    "HE",
+    "HPL",
+    "L&G",
+  ];
+  List<String> selectMeterCtRatio = [
+    "-1/A",
+    "5/5A",
+    "10/5A",
+    "20/5A",
+    "40/5A",
+    "60/5A",
+    "75/5A",
+    "100/5A",
+  ];
+  List<String> selectMeterPtRatio = [
+    "-/110V",
+    "11KV/110V",
+    "33KV/110V",
+    "132KV/110V",
+  ];
+  List<String> selectCTPTMake = ["SELECT", "Vishal", "GE Electrical", "Vijay"];
+
+  List<String> selectCTPTctRatio = [
+    "-1/A",
+    "5/5A",
+    "10/5A",
+    "20/5A",
+    "40/5A",
+    "60/5A",
+    "75/5A",
+    "100/5A",
+  ];
+
+  List<String> selectCTPTptRatio = [
+    "-/110V",
+    "11KV/110V",
+    "33KV/110V",
+    "132KV/110V",
+  ];
+  List<String> selectNewMeterMake = [
+    "SELECT",
+    "Duke Arnics",
+    "Elster",
+    "GENUS",
+    "HE",
+    "HPL",
+    "L&G",
+  ];
+  List<String> selectNewMeterCtRatio = [
+    "-1/A",
+    "5/5A",
+    "10/5A",
+    "20/5A",
+    "40/5A",
+    "60/5A",
+    "75/5A",
+    "100/5A",
+  ];
+  List<String> selectNewMeterPtRatio = [
+    "-/110V",
+    "11KV/110V",
+    "33KV/110V",
+    "132KV/110V",
+  ];
+
+  List<String> selectNewCTPTMake = [
+    "SELECT",
+    "Vishal",
+    "GE Electrical",
+    "Vijay",
+  ];
+
+  List<String> selectNewCTPTctRatio = [
+    "-1/A",
+    "5/5A",
+    "10/5A",
+    "20/5A",
+    "40/5A",
+    "60/5A",
+    "75/5A",
+    "100/5A",
+  ];
+
+  List<String> selectNewCTPTptRatio = [
+    "-/110V",
+    "11KV/110V",
+    "33KV/110V",
+    "132KV/110V",
+  ];
+  Future<void> _pickDate() async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
+  bool isChecked = false;
+  bool isNewChecked = false;
+  final InputDecoration myTextFieldDecoration = const InputDecoration(
+    border: UnderlineInputBorder(),
+    enabledBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.grey, width: 1),
+    ),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.blue, width: 2),
+    ),
+    contentPadding: EdgeInsets.symmetric(vertical: 4),
+  );
+
+  void _openSearchDialog() {
+    filteredData = List.from(allData);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              title: const Text("Search Service Details"),
+              content: SizedBox(
+                width: double.maxFinite,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      decoration: const InputDecoration(
+                        hintText: "Search...",
+                        prefixIcon: Icon(Icons.search),
+                      ),
+                      onChanged: (value) {
+                        setDialogState(() {
+                          filteredData = allData
+                              .where(
+                                (item) => item.toLowerCase().contains(
+                                  value.toLowerCase(),
+                                ),
+                              )
+                              .toList();
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                        itemCount: filteredData.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(filteredData[index]),
+                            onTap: () {
+                              // Update parent dropdown
+                              setState(() {
+                                selectedService = filteredData[index];
+                              });
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("Close"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  List<String> filteredData = [];
+
+  List<String> allData = [
+    "Alpha",
+    "Beta",
+    "Gamma",
+    "Delta",
+    "Epsilon",
+    "Zeta",
+    "Theta",
+    "Iota",
+    "Kappa",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        backgroundColor: const Color.fromARGB(255, 167, 15, 46),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text('HT METERS', style: TextStyle(fontSize: 18)),
+            Text(
+              'HT_CONV_HT_TO_SOLAR',
+              style: TextStyle(fontSize: 14, color: Colors.white70),
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: Column(
+            children: [
+              Card(
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "SECTION DETAILS",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Division Dropdown
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "SELECT DIVISION",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedDivision,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectDivision
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedDivision = value;
+                            selectedSubDivision = null;
+                            //selectSubDivision[0]; // reset next
+                            selectedSection = null; // reset third
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 12),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "SELECT SUB-DIVISION",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedSubDivision,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectSubDivision
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: selectedDivision == null
+                            ? null
+                            : (value) {
+                                setState(() {
+                                  selectedSubDivision = value;
+                                  selectedSection = null;
+                                  // selectedSection = selectSection[0];
+                                });
+                              },
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // Status Dropdown
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "SELECT SECTION",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedSection,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectSection
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: selectedSubDivision == null
+                            ? null
+                            : (value) {
+                                setState(() {
+                                  selectedSection = value;
+                                });
+                              },
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Select Date of Conversion",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: _pickDate,
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 14,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            selectedDate != null
+                                ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
+                                : "TAP HERE",
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "NATURE OF PREMISES",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedPremises,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectPremises
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedPremises = value;
+
+                            //selectSubDivision[0]; // reset next
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ),
+
+              Card(
+                color: Colors.white,
+
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "SERVICE DETAILS",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "SERVICE NO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      Row(
+                        children: [
+                          Expanded(
+                            child: DropdownButtonFormField2<String>(
+                              value: selectedService,
+                              
+                              decoration: const InputDecoration(
+                                labelStyle: TextStyle(color: Colors.red),
+                                border: OutlineInputBorder(),
+                                hintText: "SELECT",
+                              ),
+                              items: allData
+                                  .map(
+                                    (status) => DropdownMenuItem(
+                                      value: status,
+                                      child: Text(status),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedService = value;
+                                });
+                              },
+                            ),
+                          ),
+
+                          const SizedBox(width: 8),
+                          Container(
+                            height: 48,
+                            width: 48,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: IconButton(
+                              onPressed: _openSearchDialog,
+                              icon: const Icon(
+                                Icons.search,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      Divider(color: Colors.grey.shade300, thickness: 1),
+
+                      Row(
+                        children: [
+                          Text("SC.NO/USCNO"),
+                          Spacer(),
+                          Text("22 22 129371/15855182"),
+                        ],
+                      ),
+                      Divider(color: Colors.grey.shade300, thickness: 1),
+                      Row(
+                        children: [
+                          Text("NAME"),
+                          Spacer(),
+                          Column(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.end, // align right
+                            children: [
+                              Text("SMT.THOTA SHPBHA RANI &Others"),
+                              // Text("&Others"),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Divider(color: Colors.grey.shade300, thickness: 1),
+                      Row(children: [Text("CAT/MF"), Spacer(), Text("2/1")]),
+                      Divider(color: Colors.grey.shade300, thickness: 1),
+                      Row(
+                        children: [
+                          Text("DISTRIBUTION"),
+                          Spacer(),
+                          Text("H.NO.6-2-316"),
+                        ],
+                      ),
+                      Divider(color: Colors.grey.shade300, thickness: 1),
+                      Row(children: [Text("CMD"), Spacer(), Text("120.0")]),
+                    ],
+                  ),
+                ),
+              ),
+              Card(
+                color: Colors.white,
+
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "METER DETAILS AS PER EBS",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Division Dropdown
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER MAKE",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedEbsMeterMake,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+hintText: "SELECT",
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        
+                        items: ["SECURI"]
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedEbsMeterMake = value;
+                          });
+                        },
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER SERIAL NO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      TextField(
+                        readOnly: true,
+                        controller: TextEditingController(text: "Read Only "),
+
+                        decoration: const InputDecoration(
+                          // labelText: "Read Only Field",
+                          border: InputBorder.none,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+                    ],
+                  ),
+                ),
+              ),
+
+              //meter details as per field card
+              Card(
+                color: Colors.white,
+
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "METER DETAILS AS PER FIELD",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Division Dropdown
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER MAKE",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedFieldMeterMake,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "SELECT",
+
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectFieldMetermake
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedFieldMeterMake = value;
+                          });
+                        },
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER SERIAL NO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      TextField(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER CT RATIO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedMeterCtRatio,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectMeterCtRatio
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedMeterCtRatio = value;
+                          });
+                        },
+                      ),
+
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER PT RATIO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedMeterPtRatio,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectMeterPtRatio
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedMeterPtRatio = value;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER WARRANTY",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedMeterWarranty,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: ["WGP", "RGP", "BGP"]
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedMeterWarranty = value;
+                            //     });
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: const Text(
+                              "METER MF",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            flex: 2,
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.right,
+                              // textDirection: TextDirection.rtl,
+                              inputFormatters: [
+                                FilteringTextInputFormatter
+                                    .digitsOnly, // only digits
+                                LengthLimitingTextInputFormatter(
+                                  5,
+                                ), // max 5 digits
+                              ],
+                              decoration: const InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 8,
+                                ),
+                                border: InputBorder.none,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.blue,
+                                    width: 2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const Text(
+                            "PO MONTH YEAR(MM/YY)",
+                            style: TextStyle(fontSize: 12, color: Colors.red),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: TextField(
+                              // controller: _controllerPO,
+                              textAlign: TextAlign.right,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(
+                                  6,
+                                ), // MMYYYY (digits only, no slash)
+                                TextInputFormatter.withFunction((
+                                  oldValue,
+                                  newValue,
+                                ) {
+                                  String digits = newValue.text.replaceAll(
+                                    '/',
+                                    '',
+                                  );
+
+                                  // Auto-prepend '0' if month is single digit and > 1
+                                  if (digits.length == 1 &&
+                                      int.tryParse(digits) != null) {
+                                    int m = int.parse(digits);
+                                    if (m > 1) {
+                                      digits = '0' + digits; // e.g., 3 → 03
+                                    }
+                                  }
+
+                                  if (digits.length >= 2) {
+                                    int month =
+                                        int.tryParse(digits.substring(0, 2)) ??
+                                        0;
+                                    if (month < 1 || month > 12) {
+                                      return oldValue;
+                                    }
+                                  }
+
+                                  if (digits.length > 6) {
+                                    digits = digits.substring(0, 6);
+                                  }
+
+                                  // Insert slash after month
+                                  String formatted = digits;
+                                  if (digits.length > 2) {
+                                    formatted =
+                                        digits.substring(0, 2) +
+                                        '/' +
+                                        digits.substring(2);
+                                  }
+
+                                  return TextEditingValue(
+                                    text: formatted,
+                                    selection: TextSelection.collapsed(
+                                      offset: formatted.length,
+                                    ),
+                                  );
+                                }),
+                              ],
+                              decoration: InputDecoration(
+                                hintText: "MM/YYYY",
+                                border: OutlineInputBorder(),
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 10,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12),
+                    ],
+                  ),
+                ),
+              ),
+
+              Card(
+                color: Colors.white,
+
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "CTPT DETAILS",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Division Dropdown
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "CTPT MAKE",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedCTPTMake,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "SELECT",
+
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectCTPTMake
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedCTPTMake = value;
+                          });
+                        },
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "CTPT SERIAL NO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(20),
+                        ],
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "CTPT SAP EQUIPMENT NO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(15),
+                        ],
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "CT RATIO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedCTPTctRatio,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectCTPTctRatio
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedCTPTctRatio = value;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "PT RATIO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedCTPTptRatio,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectCTPTptRatio
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedCTPTptRatio = value;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                ),
+              ),
+
+              Card(
+                color: Colors.white,
+
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "METER READING DETAILS",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Division Dropdown
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: isChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isChecked = value ?? false;
+                              });
+                            },
+                          ),
+                          const Text("SOLAR METER"),
+                        ],
+                      ),
+                      if (!isChecked) ...[
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("KWH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _kwh,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("KVAH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _kvah,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("MD")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _md,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("TOD 1 KVAH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _tod1kvah,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("KWH ERROR %")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _kwhError,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: const Text("METER SATISFACTORY"),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: DropdownButtonFormField2<String>(
+                                decoration: myTextFieldDecoration,
+                                value: meterSatisfaction,
+                                hint: const Text("Select"),
+                                items: ["Yes", "No"]
+                                    .map(
+                                      (e) => DropdownMenuItem<String>(
+                                        value: e,
+                                        child: Text(e),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    meterSatisfaction = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ] else ...[
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("IMPORT KWH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _importKWH,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("EXPORT KWH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _exportKWH,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("IMPORT KVAH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _importKVAH,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("EXPORT KVAH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _exportKVAH,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("IMPORT MD")),
+
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _importMD,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("EXPORT MD")),
+
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _exportMD,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("TOD 1 KVAH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _tod1kvah,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("KWH ERROR %")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _kwhErrorInSolar,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: const Text("METER SATISFACTORY"),
+                            ),
+
+                            Expanded(
+                              flex: 2,
+                              child: DropdownButtonFormField2<String>(
+                                decoration: myTextFieldDecoration,
+                                value: meterSatisfaction,
+                                hint: const Text("Select"),
+                                items: ["Yes", "No"]
+                                    .map(
+                                      (e) => DropdownMenuItem<String>(
+                                        value: e,
+                                        child: Text(e),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    meterSatisfaction = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+
+              //NEW METER DETAILS
+              Card(
+                color: Colors.white,
+
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "NEW METER DETAILS",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Division Dropdown
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "NEW METER MAKE",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedNewMeterMake,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "SELECT",
+
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectNewMeterMake
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedNewMeterMake = value;
+                          });
+                        },
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER SERIAL NO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(20),
+                        ],
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER CT RATIO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedNewMeterCtRatio,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectNewMeterCtRatio
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedNewMeterCtRatio = value;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER CT RATIO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedNewMeterPtRatio,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectNewMeterPtRatio
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedNewMeterPtRatio = value;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: const Text(
+                              "METER MF",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            flex: 2,
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.right,
+                              // textDirection: TextDirection.rtl,
+                              inputFormatters: [
+                                FilteringTextInputFormatter
+                                    .digitsOnly, // only digits
+                                LengthLimitingTextInputFormatter(
+                                  5,
+                                ), // max 5 digits
+                              ],
+                              decoration: const InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 8,
+                                ),
+                                border: InputBorder.none,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.blue,
+                                    width: 2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      // meter warranty
+                      SizedBox(height: 12),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER WARRANTY",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedNewMeterWarranty,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: ["WGP", "RGP", "BGP"]
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedNewMeterWarranty = value;
+                            //     });
+                          });
+                        },
+                      ),
+                      SizedBox(height: 12),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER PO NO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      TextField(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const Text(
+                            "PO MONTH YEAR(MM/YY)",
+                            style: TextStyle(fontSize: 12, color: Colors.red),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: TextField(
+                              // controller: _controllerPO,
+                              textAlign: TextAlign.right,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(
+                                  6,
+                                ), // MMYYYY (digits only, no slash)
+                                TextInputFormatter.withFunction((
+                                  oldValue,
+                                  newValue,
+                                ) {
+                                  String digits = newValue.text.replaceAll(
+                                    '/',
+                                    '',
+                                  );
+
+                                  // Auto-prepend '0' if month is single digit and > 1
+                                  if (digits.length == 1 &&
+                                      int.tryParse(digits) != null) {
+                                    int m = int.parse(digits);
+                                    if (m > 1) {
+                                      digits = '0' + digits; // e.g., 3 → 03
+                                    }
+                                  }
+
+                                  // Validate month
+                                  if (digits.length >= 2) {
+                                    int month =
+                                        int.tryParse(digits.substring(0, 2)) ??
+                                        0;
+                                    if (month < 1 || month > 12) {
+                                      return oldValue; // Reject invalid month
+                                    }
+                                  }
+
+                                  // Limit to 6 digits (MMYYYY)
+                                  if (digits.length > 6) {
+                                    digits = digits.substring(0, 6);
+                                  }
+
+                                  // Insert slash after month
+                                  String formatted = digits;
+                                  if (digits.length > 2) {
+                                    formatted =
+                                        digits.substring(0, 2) +
+                                        '/' +
+                                        digits.substring(2);
+                                  }
+
+                                  return TextEditingValue(
+                                    text: formatted,
+                                    selection: TextSelection.collapsed(
+                                      offset: formatted.length,
+                                    ),
+                                  );
+                                }),
+                              ],
+                              decoration: InputDecoration(
+                                hintText: "MM/YYYY",
+                                border: OutlineInputBorder(),
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 10,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12),
+                    ],
+                  ),
+                ),
+              ),
+              // NEW CTPT DETAILS
+              Card(
+                color: Colors.white,
+
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "NEW CTPT DETAILS",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Division Dropdown
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "CTPT MAKE",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedNewCTPTMake,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "SELECT",
+
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectNewCTPTMake
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedNewCTPTMake = value;
+                          });
+                        },
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "CTPT SERIAL NO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(20),
+                        ],
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "NEW CTPT SAP EQUIPMENT NO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(15),
+                        ],
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "CT RATIO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedNewCTPTctRatio,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectNewCTPTctRatio
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedNewCTPTctRatio = value;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "PT RATIO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedNewCTPTptRatio,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: selectNewCTPTptRatio
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedNewCTPTptRatio = value;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                ),
+              ),
+
+              // NEW METER READING DETAILS
+              Card(
+                color: Colors.white,
+
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "NEW METER READING DETAILS",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Division Dropdown
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: isNewChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isNewChecked = value ?? false;
+                              });
+                            },
+                          ),
+                          const Text("SOLAR METER"),
+                        ],
+                      ),
+                      if (!isNewChecked) ...[
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("KWH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _kwh,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("KVAH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _kvah,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("MD")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _md,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("KWH ERROR %")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _kwhError,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: const Text("NEW METER SATISFACTORY"),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: DropdownButtonFormField2<String>(
+                                decoration: myTextFieldDecoration,
+                                value: meterNewSatisfaction,
+                                hint: const Text("Select"),
+                                items: ["Yes", "No"]
+                                    .map(
+                                      (e) => DropdownMenuItem<String>(
+                                        value: e,
+                                        child: Text(e),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    meterSatisfaction = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ] else ...[
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("IMPORT KWH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _importKWH,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("EXPORT KWH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _exportKWH,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("IMPORT KVAH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _importKVAH,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("EXPORT KVAH")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _exportKVAH,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("IMPORT MD")),
+
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _importMD,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("EXPORT MD")),
+
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _exportMD,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(flex: 2, child: const Text("KWH ERROR %")),
+                            Expanded(
+                              flex: 2,
+                              child: TextField(
+                                // controller: _kwhErrorInSolar,
+                                textAlign: TextAlign.right,
+                                keyboardType: TextInputType.number,
+                                decoration: myTextFieldDecoration,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: const Text("NEW METER SATISFACTORY"),
+                            ),
+
+                            Expanded(
+                              flex: 2,
+                              child: DropdownButtonFormField2<String>(
+                                decoration: myTextFieldDecoration,
+                                value: meterNewSatisfaction,
+                                hint: const Text("Select"),
+                                items: ["Yes", "No"]
+                                    .map(
+                                      (e) => DropdownMenuItem<String>(
+                                        value: e,
+                                        child: Text(e),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    meterSatisfaction = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12,),
+
+              Card(
+                color: Colors.white,
+
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "REMARKS",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "REMARKS",
+                            style: TextStyle(fontSize: 12, color: Colors.red),
+                          ),
+                        ],
+                      ),
+                      TextField(
+                        // controller: _remarks,
+                        minLines: 5,
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                          hintText: "Enter remarks...",
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {},
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12,),
+
+              Container(
+                height: 60,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(
+                    10,
+                  ), 
+                ),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ), 
+                    ),
+                  ),
+                  onPressed: (){},
+                  child: const Text("Submit"),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
