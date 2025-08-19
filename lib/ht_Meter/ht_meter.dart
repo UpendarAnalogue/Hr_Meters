@@ -58,18 +58,18 @@ class _HtMeterState extends State<HtMeter> {
   final TextEditingController _newmeterpomonth = TextEditingController();
   final TextEditingController _newctptserialno= TextEditingController();
   final TextEditingController _newctptsapquipmentno = TextEditingController();
-  // final TextEditingController _ = TextEditingController();
-  // final TextEditingController _ = TextEditingController();
-  // final TextEditingController _ = TextEditingController();
-  // final TextEditingController _ = TextEditingController();
-    // final TextEditingController _ = TextEditingController();
-  // final TextEditingController _ = TextEditingController();
-  // final TextEditingController _ = TextEditingController();
-  // final TextEditingController _ = TextEditingController();
-    // final TextEditingController _ = TextEditingController();
-  // final TextEditingController _ = TextEditingController();
-  // final TextEditingController _ = TextEditingController();
-  // final TextEditingController _ = TextEditingController();
+  final TextEditingController _newkwh = TextEditingController();
+  final TextEditingController _newkvah  = TextEditingController();
+  final TextEditingController _newmd  = TextEditingController();
+  final TextEditingController _newkwhError= TextEditingController();
+    final TextEditingController _newimportKWH  = TextEditingController();
+  final TextEditingController _newexportKWH   = TextEditingController();
+  final TextEditingController _newimportKVAH  = TextEditingController();
+  final TextEditingController _newexportKVAH   = TextEditingController();
+    final TextEditingController _newimportMD   = TextEditingController();
+  final TextEditingController _newexportMD   = TextEditingController();
+  final TextEditingController _newkwhErrorInSolar   = TextEditingController();
+  final TextEditingController _remarks = TextEditingController();
     // final TextEditingController _ = TextEditingController();
   // final TextEditingController _ = TextEditingController();
   // final TextEditingController _ = TextEditingController();
@@ -2092,7 +2092,7 @@ class _HtMeterState extends State<HtMeter> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _kwh,
+                                controller: _newkwh,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -2107,7 +2107,7 @@ class _HtMeterState extends State<HtMeter> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _kvah,
+                                controller: _newkvah,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -2122,7 +2122,7 @@ class _HtMeterState extends State<HtMeter> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _md,
+                                controller: _newmd,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -2137,7 +2137,7 @@ class _HtMeterState extends State<HtMeter> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _kwhError,
+                                controller: _newkwhError,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -2182,7 +2182,7 @@ class _HtMeterState extends State<HtMeter> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _importKWH,
+                                controller: _newimportKWH,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -2197,7 +2197,7 @@ class _HtMeterState extends State<HtMeter> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _exportKWH,
+                                controller: _newexportKWH,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -2212,7 +2212,7 @@ class _HtMeterState extends State<HtMeter> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _importKVAH,
+                                controller: _newimportKVAH,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -2227,7 +2227,7 @@ class _HtMeterState extends State<HtMeter> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _exportKVAH,
+                                controller: _newexportKVAH,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -2242,7 +2242,7 @@ class _HtMeterState extends State<HtMeter> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _importMD,
+                                controller: _newimportMD,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -2258,7 +2258,7 @@ class _HtMeterState extends State<HtMeter> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _exportMD,
+                                controller: _newexportMD,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -2273,7 +2273,7 @@ class _HtMeterState extends State<HtMeter> {
                             Expanded(
                               flex: 2,
                               child: TextField(
-                                // controller: _kwhErrorInSolar,
+                                controller: _newkwhErrorInSolar,
                                 textAlign: TextAlign.right,
                                 keyboardType: TextInputType.number,
                                 decoration: myTextFieldDecoration,
@@ -2345,7 +2345,7 @@ class _HtMeterState extends State<HtMeter> {
                         ],
                       ),
                       TextField(
-                        // controller: _remarks,
+                        controller: _remarks,
                         minLines: 5,
                         maxLines: null,
                         keyboardType: TextInputType.multiline,
