@@ -10,25 +10,25 @@ class HtMeter extends StatefulWidget {
 }
 
 class _HtMeterState extends State<HtMeter> {
-  String? selectedDivision; 
-  String? selectedSubDivision; 
-  String? selectedSection; 
-  DateTime? selectedDate; 
-  String? selectedPremises; 
-  String? selectedService; 
-  String? selectedEbsMeterMake; 
-  String? selectedFieldMeterMake; 
-  String? selectedMeterCtRatio; 
-  String? selectedMeterPtRatio; 
-  String? selectedMeterWarranty; 
-  String? selectedCTPTMake; 
-  String? selectedCTPTptRatio; 
-  String? selectedCTPTctRatio; 
-  String? meterSatisfaction = "Yes"; 
+  String? selectedDivision;
+  String? selectedSubDivision;
+  String? selectedSection;
+  DateTime? selectedDate;
+  String? selectedPremises;
+  String? selectedService;
+  String? selectedEbsMeterMake;
+  String? selectedFieldMeterMake;
+  String? selectedMeterCtRatio;
+  String? selectedMeterPtRatio;
+  String? selectedMeterWarranty;
+  String? selectedCTPTMake;
+  String? selectedCTPTptRatio;
+  String? selectedCTPTctRatio;
+  String? meterSatisfaction = "Yes";
   String? selectedNewMeterMake;
-  String? selectedNewMeterCtRatio; 
-  String? selectedNewMeterPtRatio; 
-  String? selectedNewMeterWarranty; 
+  String? selectedNewMeterCtRatio;
+  String? selectedNewMeterPtRatio;
+  String? selectedNewMeterWarranty;
   String? selectedNewCTPTMake;
   String? selectedNewCTPTptRatio;
   String? selectedNewCTPTctRatio;
@@ -37,6 +37,7 @@ class _HtMeterState extends State<HtMeter> {
   final TextEditingController _fieldmeterserialno = TextEditingController();
   final TextEditingController _fieldmetermf = TextEditingController();
   final TextEditingController _fieldmeterpomonth = TextEditingController();
+  final TextEditingController _fieldmeterpono = TextEditingController();
   final TextEditingController _ctptserialno = TextEditingController();
   final TextEditingController _ctptsaqequipmentno = TextEditingController();
   final TextEditingController _kwh = TextEditingController();
@@ -47,30 +48,30 @@ class _HtMeterState extends State<HtMeter> {
   final TextEditingController _importKWH = TextEditingController();
   final TextEditingController _exportKWH = TextEditingController();
   final TextEditingController _importKVAH = TextEditingController();
-  final TextEditingController _exportKVAH = TextEditingController(); 
-  final TextEditingController _importMD = TextEditingController(); 
-  final TextEditingController _exportMD = TextEditingController(); 
+  final TextEditingController _exportKVAH = TextEditingController();
+  final TextEditingController _importMD = TextEditingController();
+  final TextEditingController _exportMD = TextEditingController();
   final TextEditingController _solartod1kvah = TextEditingController();
-  final TextEditingController _kwhErrorInSolar = TextEditingController(); 
-  final TextEditingController _newmeterserialno = TextEditingController();   
+  final TextEditingController _kwhErrorInSolar = TextEditingController();
+  final TextEditingController _newmeterserialno = TextEditingController();
   final TextEditingController _newmetermf = TextEditingController();
   final TextEditingController _newmeterpono = TextEditingController();
   final TextEditingController _newmeterpomonth = TextEditingController();
-  final TextEditingController _newctptserialno= TextEditingController();
+  final TextEditingController _newctptserialno = TextEditingController();
   final TextEditingController _newctptsapquipmentno = TextEditingController();
   final TextEditingController _newkwh = TextEditingController();
-  final TextEditingController _newkvah  = TextEditingController();
-  final TextEditingController _newmd  = TextEditingController();
-  final TextEditingController _newkwhError= TextEditingController();
-    final TextEditingController _newimportKWH  = TextEditingController();
-  final TextEditingController _newexportKWH   = TextEditingController();
-  final TextEditingController _newimportKVAH  = TextEditingController();
-  final TextEditingController _newexportKVAH   = TextEditingController();
-    final TextEditingController _newimportMD   = TextEditingController();
-  final TextEditingController _newexportMD   = TextEditingController();
-  final TextEditingController _newkwhErrorInSolar   = TextEditingController();
+  final TextEditingController _newkvah = TextEditingController();
+  final TextEditingController _newmd = TextEditingController();
+  final TextEditingController _newkwhError = TextEditingController();
+  final TextEditingController _newimportKWH = TextEditingController();
+  final TextEditingController _newexportKWH = TextEditingController();
+  final TextEditingController _newimportKVAH = TextEditingController();
+  final TextEditingController _newexportKVAH = TextEditingController();
+  final TextEditingController _newimportMD = TextEditingController();
+  final TextEditingController _newexportMD = TextEditingController();
+  final TextEditingController _newkwhErrorInSolar = TextEditingController();
   final TextEditingController _remarks = TextEditingController();
-    // final TextEditingController _ = TextEditingController();
+  // final TextEditingController _ = TextEditingController();
   // final TextEditingController _ = TextEditingController();
   // final TextEditingController _ = TextEditingController();
   // final TextEditingController _ = TextEditingController();
@@ -246,8 +247,8 @@ class _HtMeterState extends State<HtMeter> {
                           filteredData = allData
                               .where(
                                 (item) => item.toLowerCase().contains(
-                                  value.toLowerCase(),
-                                ),
+                                      value.toLowerCase(),
+                                    ),
                               )
                               .toList();
                         });
@@ -301,6 +302,232 @@ class _HtMeterState extends State<HtMeter> {
     "Iota",
     "Kappa",
   ];
+
+  void _showSnackBar(BuildContext context, String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        duration: const Duration(seconds: 2),
+        content: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 6,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Text(
+              msg,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _checkField(BuildContext context) {
+    if (selectedDivision == null) {
+      _showSnackBar(context, "Please Select your Division !");
+    } else if (selectedSubDivision == null || selectedSubDivision!.isEmpty) {
+      _showSnackBar(context, "Please Select your Sub Division !");
+    } else if (selectedSection == null || selectedSection!.isEmpty) {
+      _showSnackBar(context, "Please Select your Section !");
+    } else if (selectedDate == null) {
+      _showSnackBar(context, "Please Select Date of Conversion");
+    } else if (selectedPremises == null || selectedPremises!.isEmpty) {
+      _showSnackBar(context, "Please Select Nature of Premises");
+    } else if (selectedService == null || selectedService!.isEmpty) {
+      _showSnackBar(context, "Please Select Your Service No");
+    } else if (selectedEbsMeterMake == null || selectedEbsMeterMake!.isEmpty) {
+      _showSnackBar(context, "Please Select Meter Make ");
+    } else if (selectedFieldMeterMake == null ||
+        selectedFieldMeterMake!.isEmpty) {
+      _showSnackBar(
+          context, "Please Select Meter Make in Meter Details as Per Field");
+    } else if (_fieldmeterserialno.text.trim().isEmpty) {
+      _showSnackBar(context, " Please Enter Meter Serial No ");
+    } else if (selectedMeterCtRatio == null || selectedMeterCtRatio!.isEmpty) {
+      _showSnackBar(context, "Please Select Meter CT Ratio");
+    } else if (selectedMeterPtRatio == null || selectedMeterPtRatio!.isEmpty) {
+      _showSnackBar(context, "Please Select Meter PT Ratio");
+    } else if (_fieldmetermf.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter METER MF");
+    } else if (selectedMeterWarranty == null ||
+        selectedMeterWarranty!.isEmpty) {
+      _showSnackBar(context, "Please Select Meter Warranty");
+    } else if (_fieldmeterpono.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter Meter PO NO");
+    } else if (_fieldmeterpomonth.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter PO MONTH");
+    } else if (selectedCTPTMake == null || selectedCTPTMake!.isEmpty) {
+      _showSnackBar(context, "Please Select CTPT MAKE");
+    } else if (_ctptserialno.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter CTPT Serial No");
+    } else if (_ctptsaqequipmentno.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter CTPT SAP EQUIPMENT NO");
+    } else if (selectedCTPTctRatio == null || selectedCTPTctRatio!.isEmpty) {
+      _showSnackBar(context, "Please Select CT Ratio");
+    } else if (selectedCTPTptRatio == null || selectedCTPTptRatio!.isEmpty) {
+      _showSnackBar(context, "Please Select PT Ratio");
+    } else if (!isChecked && _kwh.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter KWH");
+    } else if (!isChecked && _kvah.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter KVAH");
+    } else if (!isChecked && _md.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter MD");
+    } else if (!isChecked && _tod1kvah.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter TOD 1 KWH");
+    } else if (!isChecked && _kwhError.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter KWH ERROR");
+    } else if (!isChecked && meterSatisfaction == null ||
+        meterSatisfaction!.isEmpty) {
+      _showSnackBar(context, "Please Check the METER SATISFACTION");
+    } else if (isChecked && _importKWH.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter IMPORT KWH ");
+    } else if (isChecked && _exportKWH.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter EXPORT  KWH");
+    } else if (isChecked && _importKVAH.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter IMPORT KVAH");
+    } else if (isChecked && _exportKVAH.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter EXPORT  KAVH");
+    } else if (isChecked && _importMD.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter IMPORT  MD");
+    } else if (isChecked && _exportMD.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter EXPORT  MD");
+    } else if (isChecked && _solartod1kvah.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter TOD 1 KWH");
+    } else if (isChecked && _kwhErrorInSolar.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter KWH ERROR IN SOLAR");
+    } else if (isChecked && meterSatisfaction == null ||
+        meterSatisfaction!.isEmpty) {
+      _showSnackBar(context, "Please Check the METER SATISFACTION");
+    } else if (selectedNewMeterMake == null || selectedNewMeterMake!.isEmpty) {
+      _showSnackBar(context, "Please Select New Meter Make");
+    } else if (_newmeterserialno.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter New Meter Serial No");
+    } else if (selectedNewMeterCtRatio == null ||
+        selectedNewMeterCtRatio!.isEmpty) {
+      _showSnackBar(context, "Please Select New Meter CT Ratio");
+    } else if (selectedNewMeterPtRatio == null ||
+        selectedNewMeterPtRatio!.isEmpty) {
+      _showSnackBar(context, "Please Select New Meter PT Ratio");
+    } else if (_newmetermf.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Select New Meter MF");
+    } else if (selectedNewMeterWarranty == null ||
+        selectedNewMeterWarranty!.isEmpty) {
+      _showSnackBar(context, "Please Select New Meter Warranty");
+    } else if (_newmeterpono.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter New Meter PO NO");
+    } else if (_newmeterpomonth.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter New Meter PO MONTH");
+    } else if (selectedNewCTPTMake == null || selectedNewCTPTMake!.isEmpty) {
+      _showSnackBar(context, "Please Select CTPT METER MAKE");
+    } else if (_ctptserialno.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter CTPT SERIAL NO");
+    } else if (_ctptsaqequipmentno.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter CTPT SAP EQUIPMENT NO");
+    } else if (selectedCTPTctRatio == null || selectedCTPTctRatio!.isEmpty) {
+      _showSnackBar(context, "Please Select CTPT CT RATIO");
+    } else if (selectedCTPTptRatio == null || selectedCTPTptRatio!.isEmpty) {
+      _showSnackBar(context, "Please Select CTPT PT RATIO");
+    } else if (!isNewChecked && _newkwh.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter KWH");
+    } else if (!isNewChecked && _newkvah.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter KVAH");
+    } else if (!isNewChecked && _newmd.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter MD");
+    } else if (!isNewChecked && _newkwhError.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter KWH ERROR");
+    } else if (!isNewChecked && meterNewSatisfaction == null ||
+        meterNewSatisfaction!.isEmpty) {
+      _showSnackBar(context, "Please Check the METER SATISFACTION");
+    } else if (isNewChecked && _newimportKWH.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter IMPORT KWH ");
+    } else if (isNewChecked && _newexportKWH.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter EXPORT  KWH");
+    } else if (isNewChecked && _newimportKVAH.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter IMPORT KVAH");
+    } else if (isNewChecked && _newexportKVAH.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter EXPORT  KAVH");
+    } else if (isNewChecked && _newimportMD.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter IMPORT  MD");
+    } else if (isNewChecked && _newexportMD.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter EXPORT  MD");
+    } else if (isNewChecked && _newkwhErrorInSolar.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter KWH ERROR IN SOLAR");
+    } else if (isNewChecked && meterNewSatisfaction == null ||
+        meterNewSatisfaction!.isEmpty) {
+      _showSnackBar(context, "Please Check the METER SATISFACTION");
+    } else if (_remarks.text.trim().isEmpty) {
+      _showSnackBar(context, "Please Enter Your Remarks");
+    } else {
+      _showSuccessDialog(context);
+    }
+  }
+
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+        ),
+        backgroundColor: Colors.white,
+        titlePadding: EdgeInsets.zero,
+        title: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(12),
+          color: Colors.green,
+          child: const Text(
+            "Success",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        content: const Text(
+          "All fields are filled successfully ",
+          style: TextStyle(color: Colors.green, fontSize: 16),
+          textAlign: TextAlign.center,
+        ),
+        actionsPadding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+        actions: [
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text("OK"),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -461,7 +688,7 @@ class _HtMeterState extends State<HtMeter> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const Text(
-                            "Select Date of Conversion",
+                            "Date of Conversion",
                             style: TextStyle(fontSize: 12),
                           ),
                         ],
@@ -529,7 +756,6 @@ class _HtMeterState extends State<HtMeter> {
 
               Card(
                 color: Colors.white,
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -551,13 +777,11 @@ class _HtMeterState extends State<HtMeter> {
                           ),
                         ],
                       ),
-
                       Row(
                         children: [
                           Expanded(
                             child: DropdownButtonFormField2<String>(
                               value: selectedService,
-
                               decoration: const InputDecoration(
                                 labelStyle: TextStyle(color: Colors.red),
                                 border: OutlineInputBorder(),
@@ -578,7 +802,6 @@ class _HtMeterState extends State<HtMeter> {
                               },
                             ),
                           ),
-
                           const SizedBox(width: 8),
                           Container(
                             height: 48,
@@ -597,9 +820,7 @@ class _HtMeterState extends State<HtMeter> {
                           ),
                         ],
                       ),
-
                       Divider(color: Colors.grey.shade300, thickness: 1),
-
                       Row(
                         children: [
                           Text("SC.NO/USCNO"),
@@ -640,7 +861,6 @@ class _HtMeterState extends State<HtMeter> {
               ),
               Card(
                 color: Colors.white,
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -673,7 +893,6 @@ class _HtMeterState extends State<HtMeter> {
                           hintText: "SELECT",
                           // labelText: 'Select Complaint 2',
                         ),
-
                         items: ["SECURI"]
                             .map(
                               (e) => DropdownMenuItem<String>(
@@ -703,7 +922,6 @@ class _HtMeterState extends State<HtMeter> {
                       TextField(
                         readOnly: true,
                         controller: TextEditingController(text: "Read Only "),
-
                         decoration: const InputDecoration(
                           // labelText: "Read Only Field",
                           border: InputBorder.none,
@@ -728,7 +946,6 @@ class _HtMeterState extends State<HtMeter> {
               //meter details as per field card
               Card(
                 color: Colors.white,
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -872,39 +1089,7 @@ class _HtMeterState extends State<HtMeter> {
                         },
                       ),
                       SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "METER WARRANTY",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
 
-                      DropdownButtonFormField2<String>(
-                        isExpanded: true,
-                        value: selectedMeterWarranty,
-                        decoration: InputDecoration(
-                          hintText: "SELECT",
-                          border: OutlineInputBorder(),
-                          // labelText: 'Select Complaint 2',
-                        ),
-                        items: ["WGP", "RGP", "BGP"]
-                            .map(
-                              (e) => DropdownMenuItem<String>(
-                                value: e,
-                                child: Text(e),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            selectedMeterWarranty = value;
-                            //     });
-                          });
-                        },
-                      ),
                       SizedBox(height: 10),
 
                       Row(
@@ -955,6 +1140,67 @@ class _HtMeterState extends State<HtMeter> {
                         ],
                       ),
                       SizedBox(height: 12),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER WARRANTY",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+
+                      DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        value: selectedMeterWarranty,
+                        decoration: InputDecoration(
+                          hintText: "SELECT",
+                          border: OutlineInputBorder(),
+                          // labelText: 'Select Complaint 2',
+                        ),
+                        items: ["WGP", "RGP", "BGP"]
+                            .map(
+                              (e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(e),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedMeterWarranty = value;
+                            //     });
+                          });
+                        },
+                      ),
+                      SizedBox(height: 12),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "METER PO NO",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
+                      TextField(
+                        controller: _fieldmeterpono,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
                       Row(
                         children: [
                           const Text(
@@ -993,7 +1239,7 @@ class _HtMeterState extends State<HtMeter> {
                                   if (digits.length >= 2) {
                                     int month =
                                         int.tryParse(digits.substring(0, 2)) ??
-                                        0;
+                                            0;
                                     if (month < 1 || month > 12) {
                                       return oldValue;
                                     }
@@ -1006,8 +1252,7 @@ class _HtMeterState extends State<HtMeter> {
                                   // Insert slash after month
                                   String formatted = digits;
                                   if (digits.length > 2) {
-                                    formatted =
-                                        digits.substring(0, 2) +
+                                    formatted = digits.substring(0, 2) +
                                         '/' +
                                         digits.substring(2);
                                   }
@@ -1040,7 +1285,6 @@ class _HtMeterState extends State<HtMeter> {
 
               Card(
                 color: Colors.white,
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -1227,7 +1471,6 @@ class _HtMeterState extends State<HtMeter> {
 
               Card(
                 color: Colors.white,
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -1271,7 +1514,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("KVAH")),
@@ -1286,7 +1528,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("MD")),
@@ -1315,7 +1556,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("KWH ERROR %")),
@@ -1330,7 +1570,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(
@@ -1375,7 +1614,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("EXPORT KWH")),
@@ -1390,7 +1628,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("IMPORT KVAH")),
@@ -1405,7 +1642,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("EXPORT KVAH")),
@@ -1423,7 +1659,6 @@ class _HtMeterState extends State<HtMeter> {
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("IMPORT MD")),
-
                             Expanded(
                               flex: 2,
                               child: TextField(
@@ -1435,11 +1670,9 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("EXPORT MD")),
-
                             Expanded(
                               flex: 2,
                               child: TextField(
@@ -1451,7 +1684,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("TOD 1 KVAH")),
@@ -1466,7 +1698,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("KWH ERROR %")),
@@ -1481,14 +1712,12 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(
                               flex: 2,
                               child: const Text("METER SATISFACTORY"),
                             ),
-
                             Expanded(
                               flex: 2,
                               child: DropdownButtonFormField2<String>(
@@ -1521,7 +1750,6 @@ class _HtMeterState extends State<HtMeter> {
               //NEW METER DETAILS
               Card(
                 color: Colors.white,
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -1820,7 +2048,7 @@ class _HtMeterState extends State<HtMeter> {
                                   if (digits.length >= 2) {
                                     int month =
                                         int.tryParse(digits.substring(0, 2)) ??
-                                        0;
+                                            0;
                                     if (month < 1 || month > 12) {
                                       return oldValue; // Reject invalid month
                                     }
@@ -1834,8 +2062,7 @@ class _HtMeterState extends State<HtMeter> {
                                   // Insert slash after month
                                   String formatted = digits;
                                   if (digits.length > 2) {
-                                    formatted =
-                                        digits.substring(0, 2) +
+                                    formatted = digits.substring(0, 2) +
                                         '/' +
                                         digits.substring(2);
                                   }
@@ -1868,7 +2095,6 @@ class _HtMeterState extends State<HtMeter> {
               // NEW CTPT DETAILS
               Card(
                 color: Colors.white,
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -2056,7 +2282,6 @@ class _HtMeterState extends State<HtMeter> {
               // NEW METER READING DETAILS
               Card(
                 color: Colors.white,
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -2100,7 +2325,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("KVAH")),
@@ -2115,7 +2339,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("MD")),
@@ -2130,7 +2353,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("KWH ERROR %")),
@@ -2145,7 +2367,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(
@@ -2168,7 +2389,7 @@ class _HtMeterState extends State<HtMeter> {
                                     .toList(),
                                 onChanged: (value) {
                                   setState(() {
-                                    meterSatisfaction = value;
+                                    meterNewSatisfaction = value;
                                   });
                                 },
                               ),
@@ -2190,7 +2411,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("EXPORT KWH")),
@@ -2205,7 +2425,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("IMPORT KVAH")),
@@ -2220,7 +2439,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("EXPORT KVAH")),
@@ -2238,7 +2456,6 @@ class _HtMeterState extends State<HtMeter> {
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("IMPORT MD")),
-
                             Expanded(
                               flex: 2,
                               child: TextField(
@@ -2250,11 +2467,9 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("EXPORT MD")),
-
                             Expanded(
                               flex: 2,
                               child: TextField(
@@ -2266,7 +2481,6 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(flex: 2, child: const Text("KWH ERROR %")),
@@ -2281,14 +2495,12 @@ class _HtMeterState extends State<HtMeter> {
                             ),
                           ],
                         ),
-
                         Row(
                           children: [
                             Expanded(
                               flex: 2,
                               child: const Text("NEW METER SATISFACTORY"),
                             ),
-
                             Expanded(
                               flex: 2,
                               child: DropdownButtonFormField2<String>(
@@ -2305,7 +2517,7 @@ class _HtMeterState extends State<HtMeter> {
                                     .toList(),
                                 onChanged: (value) {
                                   setState(() {
-                                    meterSatisfaction = value;
+                                    meterNewSatisfaction = value;
                                   });
                                 },
                               ),
@@ -2321,7 +2533,6 @@ class _HtMeterState extends State<HtMeter> {
 
               Card(
                 color: Colors.white,
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -2375,7 +2586,9 @@ class _HtMeterState extends State<HtMeter> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    _checkField(context);
+                  },
                   child: const Text("Submit"),
                 ),
               ),
