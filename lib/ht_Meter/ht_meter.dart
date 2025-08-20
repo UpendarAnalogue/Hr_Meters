@@ -541,7 +541,7 @@ class _HtMeterState extends State<HtMeter> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
-            Text('HT METERS', style: TextStyle(fontSize: 18,color: Colors.white,fontWeight: font),),
+            Text('HT METERS', style: TextStyle(fontSize: 18,color: Colors.white),),
             Text(
               'HT_CONV_HT_TO_SOLAR',
               style: TextStyle(fontSize: 14, color: Colors.white),
