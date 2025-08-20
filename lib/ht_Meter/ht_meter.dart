@@ -341,17 +341,17 @@ class _HtMeterState extends State<HtMeter> {
 
   void _checkField(BuildContext context) {
     if (selectedDivision == null) {
-      _showSnackBar(context, "Please Select your Division !");
+      _showSnackBar(context, "Please Select Division !");
     } else if (selectedSubDivision == null || selectedSubDivision!.isEmpty) {
-      _showSnackBar(context, "Please Select your Sub Division !");
+      _showSnackBar(context, "Please Select Sub Division !");
     } else if (selectedSection == null || selectedSection!.isEmpty) {
-      _showSnackBar(context, "Please Select your Section !");
+      _showSnackBar(context, "Please Select Section !");
     } else if (selectedDate == null) {
       _showSnackBar(context, "Please Select Date of Conversion");
     } else if (selectedPremises == null || selectedPremises!.isEmpty) {
       _showSnackBar(context, "Please Select Nature of Premises");
     } else if (selectedService == null || selectedService!.isEmpty) {
-      _showSnackBar(context, "Please Select Your Service No");
+      _showSnackBar(context, "Please Select Service No");
     } else if (selectedEbsMeterMake == null || selectedEbsMeterMake!.isEmpty) {
       _showSnackBar(context, "Please Select Meter Make ");
     } else if (selectedFieldMeterMake == null ||
@@ -541,10 +541,10 @@ class _HtMeterState extends State<HtMeter> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
-            Text('HT METERS', style: TextStyle(fontSize: 18)),
+            Text('HT METERS', style: TextStyle(fontSize: 18,color: Colors.white,fontWeight: font),),
             Text(
               'HT_CONV_HT_TO_SOLAR',
-              style: TextStyle(fontSize: 14, color: Colors.white70),
+              style: TextStyle(fontSize: 14, color: Colors.white),
             ),
           ],
         ),
@@ -1007,6 +1007,10 @@ class _HtMeterState extends State<HtMeter> {
                       ),
                       TextField(
                         controller: _fieldmeterserialno,
+                        keyboardType: TextInputType.text,  
+  inputFormatters: [
+    LengthLimitingTextInputFormatter(20),  
+  ],
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           enabledBorder: UnderlineInputBorder(
@@ -1346,9 +1350,8 @@ class _HtMeterState extends State<HtMeter> {
                       ),
                       TextField(
                         controller: _ctptserialno,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.text,
                         inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
                           LengthLimitingTextInputFormatter(20),
                         ],
                         decoration: const InputDecoration(
@@ -1811,9 +1814,8 @@ class _HtMeterState extends State<HtMeter> {
                       ),
                       TextField(
                         controller: _newmeterserialno,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.text,
                         inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
                           LengthLimitingTextInputFormatter(20),
                         ],
                         decoration: const InputDecoration(
@@ -2156,9 +2158,8 @@ class _HtMeterState extends State<HtMeter> {
                       ),
                       TextField(
                         controller: _newctptserialno,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.text,
                         inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
                           LengthLimitingTextInputFormatter(20),
                         ],
                         decoration: const InputDecoration(
